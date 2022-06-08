@@ -1,11 +1,11 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
+/*use Symfony\Component\HttpFoundation\Request;
 
 /** @var \Composer\Autoload\ClassLoader $loader */
-$loader = require __DIR__.'/../app/autoload.php';
+/*$loader = require __DIR__.'/../app/autoload.php';
 include_once __DIR__.'/../var/bootstrap.php.cache';
-
+/*
 $kernel = new AppKernel('prod', false);
 $kernel->loadClassCache();
 //$kernel = new AppCache($kernel);
@@ -15,4 +15,14 @@ $kernel->loadClassCache();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
-$kernel->terminate($request, $response);
+$kernel->terminate($request, $response);*/
+
+
+use App\Kernel;
+
+require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+
+return function (array $context) {
+    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+};
+
