@@ -8,14 +8,11 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table("user")
- * @ORM\Entity
- * @UniqueEntity("email")
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Table(name="`user`")
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -28,7 +25,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
+     * * @Assert\NotBlank(
+     *      message = "Ce champ est requis !"
+     * )
+     * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+     *      minMessage = "Votre nom d'utilisateur doit contenir au moins {{ limit }} caractères !",
+     *      maxMessage = "Votre nom d'utilisateur ne peut pas contenir plus que {{ limit }} caractères !"
+     * )
      */
     private $username;
 
@@ -40,20 +45,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * * @Assert\NotBlank(
+     *      message = "Ce champ est requis !"
+     * )
+     * @Assert\Length(
+     *      min = 6,
+     *      max = 254,
+     *      minMessage = "Votre mot de passe doit contenir au moins 6 caractères.",
+     *      maxMessage = "Votre mot de passe ne peut pas contenir plus que {{ limit }} caractères !"
+     * )
+     * @Assert\Regex(
+     *     pattern = "^(?=.*[a-z])(?=.*[A-Z])^",
+     *     match = true,
+     *     message = "Le mot de passe doit contenir au moins une minuscule et une majuscule !"
+     * )
      */
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=60)
-     * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
-     * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
-     */
-    private $email;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="author", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="user")
      */
     private $tasks;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * * @Assert\NotBlank(
+     *      message = "Ce champ est requis !"
+     * )
+     * @Assert\Email(
+     *      message = "Veuillez entrer une adresse email valide."
+     * )
+     * @Assert\Length(
+     *      max = 254,
+     *      maxMessage = "Votre adresse email ne peut pas contenir plus de {{ limit }} caractères."
+     * )
+     */
+    private $email;
 
     public function __construct()
     {
@@ -95,11 +122,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        //$roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        //$roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
+        return $this->roles;
     }
 
     public function setRoles(array $roles): self
@@ -144,20 +171,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
     /**
-     * @return Collection|Task[]
+     * @return Collection<int, Task>
      */
     public function getTasks(): Collection
     {
@@ -182,6 +197,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $task->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }

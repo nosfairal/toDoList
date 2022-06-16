@@ -6,9 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
  * @ORM\Table
- * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
+ * @ORM\Entity(repositoryClass=TaskRepository::class)
  */
 class Task
 {
@@ -26,13 +25,13 @@ class Task
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="Vous devez saisir un titre.")
+     * @Assert\NotBlank(message="Ce champ est requis !")
      */
     private $title;
 
     /**
      * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Vous devez saisir du contenu.")
+     * @Assert\NotBlank(message="Ce champ est requis !")
      */
     private $content;
 
