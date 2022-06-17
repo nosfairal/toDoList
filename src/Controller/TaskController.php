@@ -8,19 +8,23 @@ use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class TaskController extends AbstractController
 {
+    public function __construct(TaskRepository $repository, EntityManagerInterface $manager)
+    {
+       $this->repository = $repository ;
+       $this->manager = $manager ;
+    }
     /**
      * @Route("/tasks", name="task_list")
      * 
-     * Affiche la liste des tasks pas faites
+     * Display undone tasks list
      */
-    public function listAction(TaskRepository $taskRepository)
+    public function listAction()
     {
-        $tasks = $taskRepository->findBy(['isDone' => false]);
+        $tasks = $this->repository->findBy(['isDone' => false]);
 
         return $this->render('task/list.html.twig', ['tasks' => $tasks]);
     }
@@ -28,11 +32,11 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/done", name="task_list_isDone")
      * 
-     * Affiche la liste des tasks faites
+     * Display done tasks list
      */
-    public function listActionisDone(TaskRepository $taskRepository)
+    public function listActionisDone()
     {
-        $tasks = $taskRepository->findBy(['isDone' => true]);
+        $tasks = $this->repository->findBy(['isDone' => true]);
 
         return $this->render('task/list.html.twig', ['tasks' => $tasks]);
     }
@@ -40,9 +44,9 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/create", name="task_create")
      * 
-     * Créer une task
+     * Create a task
      */
-    public function createAction(Request $request, EntityManagerInterface $em)
+    public function createAction(Request $request)
     {
         $task = new Task();
 
@@ -53,10 +57,9 @@ class TaskController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $task->setCreatedAt(new \DateTime(date('Y-m-d H:i:s')))
                 ->setIsDone(false)
-                ->setAuthor($this->getAuthor());
+                ->setAuthor($this->getUser());
 
-            $em->persist($task);
-            $em->flush();
+            $this->repository->add($task);
 
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
@@ -69,16 +72,16 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
      * 
-     * Modifier une task
+     * Update a task
      */
-    public function editAction(Task $task, Request $request, EntityManagerInterface $em)
+    public function editAction(Task $task, Request $request)
     {
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
+            $this->manager->flush();
 
             $this->addFlash('success', 'La tâche a bien été modifiée.');
 
@@ -97,13 +100,13 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
      * 
-     * Affiche une task comme faite
+     * Toggle task to done
      */
-    public function toggleTaskAction(Task $task, EntityManagerInterface $em)
+    public function toggleTaskAction(Task $task)
     {
-        $task->toggle(!$task->getIsDone());
+        $task->toggle(!$task->GetIsDone());
 
-        $em->flush();
+        $this->manager->flush();
 
         $this->addFlash('success', sprintf('La tâche %s a bien été marquée comme faite.', $task->getTitle()));
 
@@ -113,15 +116,15 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      * 
-     * Effacer une task
+     * Delete a  task
      */
-    public function deleteTaskAction(Task $task, EntityManagerInterface $em)
+    public function deleteTaskAction(Task $task)
     {
-        $user = $this->getAuthor()->getRoles();
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser()->getRoles();
 
-        if ($task->getAuthor() === null && $user[0] == "ROLE_ADMIN" || $task->getAuthor() == $this->getAuthor()) {
-            $em->remove($task);
-            $em->flush();
+        if ($task->getAuthor() === null && $user[0] == "ROLE_ADMIN" || $task->getAuthor() == $this->getUser()) {
+            $this->repository->remove($task);
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');
         } else {
