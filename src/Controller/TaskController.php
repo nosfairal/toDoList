@@ -50,8 +50,6 @@ class TaskController extends AbstractController
     public function createAction(Request $request)
     {
         $task = new Task();
-        $user = $this->getUser();
-        dd($user);
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
@@ -122,8 +120,7 @@ class TaskController extends AbstractController
      */
     public function deleteTaskAction(Task $task)
     {
-        $user = $task->getAuthor();//->getRoles();
-\dd($user);
+        $user = $task->getAuthor()->getRoles();
         if ($task->getAuthor() === null && $user[0] == "ROLE_ADMIN" || $task->getAuthor() == $this->getUser()) {
             $this->repository->remove($task);
 
