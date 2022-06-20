@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Task;
+use App\Entity\User;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,7 +50,8 @@ class TaskController extends AbstractController
     public function createAction(Request $request)
     {
         $task = new Task();
-
+        $user = $this->getUser();
+        dd($user);
         $form = $this->createForm(TaskType::class, $task);
 
         $form->handleRequest($request);
@@ -120,9 +122,8 @@ class TaskController extends AbstractController
      */
     public function deleteTaskAction(Task $task)
     {
-        /** @var \App\Entity\User $user */
-        $user = $this->getUser()->getRoles();
-
+        $user = $task->getAuthor();//->getRoles();
+\dd($user);
         if ($task->getAuthor() === null && $user[0] == "ROLE_ADMIN" || $task->getAuthor() == $this->getUser()) {
             $this->repository->remove($task);
 

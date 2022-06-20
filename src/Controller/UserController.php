@@ -51,7 +51,8 @@ class UserController extends AbstractController
                 $redirectRoute = 'user_list';
             }
 
-            $this->manager->add($user);
+            $this->manager->persist($user);
+            $this->manager->flush();
 
             $this->addFlash('success', "Le compte utilisateur a bien été créé.");
 
