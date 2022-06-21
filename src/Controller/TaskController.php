@@ -7,7 +7,7 @@ use App\Entity\User;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -59,7 +59,8 @@ class TaskController extends AbstractController
                 ->setIsDone(false)
                 ->setAuthor($this->getUser());
 
-            $this->repository->add($task);
+            $this->manager->persist($task);
+            $this->manager->flush();
 
             $this->addFlash('success', 'La tâche a été bien été ajoutée.');
 
@@ -120,9 +121,10 @@ class TaskController extends AbstractController
      */
     public function deleteTaskAction(Task $task)
     {
-        $user = $task->getAuthor()->getRoles();
+        $user = $this->getUser()->getRoles();
         if ($task->getAuthor() === null && $user[0] == "ROLE_ADMIN" || $task->getAuthor() == $this->getUser()) {
-            $this->repository->remove($task);
+            $this->manager->remove($task);
+            $this->manager->flush();
 
             $this->addFlash('success', 'La tâche a bien été supprimée.');
         } else {

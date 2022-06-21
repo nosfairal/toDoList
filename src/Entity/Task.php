@@ -7,8 +7,8 @@ use App\Repository\TaskRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table
  * @ORM\Entity(repositoryClass=TaskRepository::class)
+ * @ORM\Table
  */
 class Task
 {

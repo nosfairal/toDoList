@@ -1,0 +1,105 @@
+PHPUnit 9.0.0 by Sebastian Bergmann and contributors.
+
+Testing 
+F                                                                   1 / 1 (100%)
+
+Time: 00:01.269, Memory: 26.00 MB
+
+There was 1 failure:
+
+1) App\Tests\TaskControllerTest::testCreateTasksNoLogged
+Failed asserting that Symfony\Component\HttpFoundation\RedirectResponse Object &00000000248e22b9000000006e5c23f0 (
+    'targetUrl' => 'http://localhost/login'
+    'headers' => Symfony\Component\HttpFoundation\ResponseHeaderBag Object &00000000248e2366000000006e5c23f0 (
+        'computedCacheControl' => Array &0 (
+            'max-age' => '0'
+            'must-revalidate' => true
+            'private' => true
+        )
+        'cookies' => Array &1 (
+            '' => Array &2 (
+                '/' => Array &3 (
+                    'MOCKSESSID' => Symfony\Component\HttpFoundation\Cookie Object &00000000248e235f000000006e5c23f0 (
+                        'name' => 'MOCKSESSID'
+                        'value' => '47ea7c0197c81db1f7654f27fc24ceb2ef9d2616410ffae987692cc6708080ad'
+                        'domain' => ''
+                        'expire' => 0
+                        'path' => '/'
+                        'secure' => false
+                        'httpOnly' => true
+                        'raw' => false
+                        'sameSite' => 'lax'
+                        'secureDefault' => false
+                    )
+                )
+            )
+        )
+        'headerNames' => Array &4 (
+            'cache-control' => 'Cache-Control'
+            'date' => 'Date'
+            'location' => 'Location'
+            'content-type' => 'Content-Type'
+            'x-robots-tag' => 'X-Robots-Tag'
+            'set-cookie' => 'Set-Cookie'
+            'expires' => 'Expires'
+        )
+        'headers' => Array &5 (
+            'cache-control' => Array &6 (
+                0 => 'max-age=0, must-revalidate, private'
+            )
+            'date' => Array &7 (
+                0 => 'Tue, 21 Jun 2022 09:03:15 GMT'
+            )
+            'location' => Array &8 (
+                0 => 'http://localhost/login'
+            )
+            'content-type' => Array &9 (
+                0 => 'text/html; charset=UTF-8'
+            )
+            'x-robots-tag' => Array &10 (
+                0 => 'noindex'
+            )
+            'expires' => Array &11 (
+                0 => 'Tue, 21 Jun 2022 09:03:15 GMT'
+            )
+        )
+        'cacheControl' => Array &12 (
+            'max-age' => '0'
+            'must-revalidate' => true
+            'private' => true
+        )
+    )
+    'content' => '<!DOCTYPE html>\n
+<html>\n
+    <head>\n
+        <meta charset="UTF-8" />\n
+        <meta http-equiv="refresh" content="0;url='http://localhost/login'" />\n
+\n
+        <title>Redirecting to http://localhost/login</title>\n
+    </head>\n
+    <body>\n
+        Redirecting to <a href="http://localhost/login">http://localhost/login</a>.\n
+    </body>\n
+</html>'
+    'version' => '1.1'
+    'statusCode' => 302
+    'statusText' => 'Found'
+    'charset' => 'UTF-8'
+) is redirected and has header "Location" with value "http://127.0.0.1:8000/login" and status code is 302.
+
+D:\toDoList\vendor\symfony\framework-bundle\Test\BrowserKitAssertionsTrait.php:142
+D:\toDoList\vendor\symfony\framework-bundle\Test\BrowserKitAssertionsTrait.php:56
+D:\toDoList\tests\Controller\TaskControllerTest.php:67
+phpvfscomposer://D:\toDoList\vendor\phpunit\phpunit\phpunit:60
+
+FAILURES!
+Tests: 1, Assertions: 3, Failures: 1.
+
+Remaining indirect deprecation notices (2)
+
+  1x: The "Symfony\Bridge\Doctrine\Logger\DbalLogger" class implements "Doctrine\DBAL\Logging\SQLLogger" that is deprecated Use {@see \Doctrine\DBAL\Logging\Middleware} or implement {@see \Doctrine\DBAL\Driver\Middleware} instead.
+    1x in TaskControllerTest::tearDown from App\Tests
+
+  1x: The "DAMA\DoctrineTestBundle\Doctrine\DBAL\VersionAwarePlatformStaticDriver" class implements "Doctrine\DBAL\VersionAwarePlatformDriver" that is deprecated All drivers will have to be aware of the server version in the next major release.
+    1x in TaskControllerTest::tearDown from App\Tests
+

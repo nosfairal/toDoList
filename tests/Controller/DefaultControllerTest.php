@@ -3,18 +3,32 @@
 namespace App\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Repository\UserRepository;
 
 class DefaultControllerTest extends WebTestCase
 {
 
 
-    public function testIndexAction()
+    private $client = null;
+
+    public function setUp(): void
     {
-        $client = static::createClient();
+        $this->client = static::createClient();
+    }
 
-        $crawler = $client->request('GET', '/');
+    public function testLoggedHomepage()
+    {
+        $userRepository = static::getContainer()->get(UserRepository::class);
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertStringContainsString("Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !", $crawler->filter('.container h1')->text());
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('test@test.fr');
+
+        // simulate $testUser being logged in
+        $this->client->loginUser($testUser);
+
+        $this->client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+        // $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertSelectorExists('h1', 'Bienvenue');
     }
 }
