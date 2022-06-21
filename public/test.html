@@ -1,0 +1,159 @@
+PHPUnit 9.0.0 by Sebastian Bergmann and contributors.
+
+Testing 
+F                                                                   1 / 1 (100%)
+
+Time: 00:01.735, Memory: 28.00 MB
+
+There was 1 failure:
+
+1) App\Tests\TaskControllerTest::testListTasksNoLogged
+Failed asserting that Symfony\Component\HttpFoundation\Response Object &00000000365c58370000000071502980 (
+    'headers' => Symfony\Component\HttpFoundation\ResponseHeaderBag Object &00000000365c58440000000071502980 (
+        'computedCacheControl' => Array &0 (
+            'max-age' => '0'
+            'must-revalidate' => true
+            'private' => true
+        )
+        'cookies' => Array &1 ()
+        'headerNames' => Array &2 (
+            'cache-control' => 'Cache-Control'
+            'date' => 'Date'
+            'content-type' => 'Content-Type'
+            'x-robots-tag' => 'X-Robots-Tag'
+            'expires' => 'Expires'
+        )
+        'headers' => Array &3 (
+            'cache-control' => Array &4 (
+                0 => 'max-age=0, must-revalidate, private'
+            )
+            'date' => Array &5 (
+                0 => 'Mon, 20 Jun 2022 12:41:06 GMT'
+            )
+            'content-type' => Array &6 (
+                0 => 'text/html; charset=UTF-8'
+            )
+            'x-robots-tag' => Array &7 (
+                0 => 'noindex'
+            )
+            'expires' => Array &8 (
+                0 => 'Mon, 20 Jun 2022 12:41:06 GMT'
+            )
+        )
+        'cacheControl' => Array &9 (
+            'max-age' => '0'
+            'must-revalidate' => true
+            'private' => true
+        )
+    )
+    'content' => '<!DOCTYPE html>\n
+<html lang="fr">\n
+\n
+    <head>\n
+        <meta charset="utf-8">\n
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">\n
+        <meta name="viewport" content="width=device-width, initial-scale=1">\n
+        <meta name="description" content="">\n
+        <meta name="author" content="">\n
+\n
+        <title>To Do List app</title>\n
+\n
+        <!-- Bootstrap Core CSS -->\n
+        <link href="/css/bootstrap.min.css" rel="stylesheet">\n
+\n
+        <!-- Custom CSS -->\n
+        <link href="/css/shop-homepage.css" rel="stylesheet">\n
+\n
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->\n
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->\n
+        <!--[if lt IE 9]>\n
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>\n
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>\n
+        <![endif]-->\n
+    </head>\n
+\n
+    <body>\n
+        <nav class="navbar navbar-light navbar-fixed-top" style="background-color: #e3f2fd;" role="navigation">\n
+            <div class="container">\n
+                <div class="navbar-header">\n
+                    <a class="navbar-brand" href="#">To Do List app</a>\n
+\n
+                    <img src="/img/Logo_OpenClassrooms.png" alt="OpenClassrooms" />\n
+                </div>\n
+            </div>\n
+        </nav>\n
+\n
+        <!-- Page Content -->\n
+        <div class="container">\n
+            <div class="row">\n
+                <a href="/users/create" class="btn btn-primary">Créer un utilisateur</a>\n
+\n
+                \n
+                                <a href="/login" class="btn btn-success">Se connecter</a>\n
+                            </div>\n
+\n
+            <div class="row">\n
+                <div class="col-md-12">\n
+                    \n
+                    \n
+                                        <img class="slide-image" src="/img/todolist_content.jpg" alt="todo list">                </div>\n
+            </div>\n
+\n
+            <br />\n
+\n
+            <div class="row">\n
+                <div class="col-md-12">\n
+                        <a href="/tasks/create" class="btn btn-info pull-right">Créer une tâche</a>\n
+    <div class="row">\n
+                    <div class="alert alert-warning" role="alert">\n
+                Il n'y a pas encore de tâche enregistrée. <a href="/tasks/create" class="btn btn-warning pull-right">Créer une tâche</a>\n
+            </div>\n
+            </div>\n
+                </div>\n
+            </div>\n
+        </div>\n
+        <!-- /.container -->\n
+\n
+        <div class="container">\n
+\n
+            <hr>\n
+            <footer>\n
+                <div class="row">\n
+                    <div class="col-lg-12">\n
+                        <p class="pull-right">Copyright &copy; OpenClassrooms</p>\n
+                    </div>\n
+                </div>\n
+            </footer>\n
+\n
+        </div>\n
+\n
+        <script src="/js/jquery.js"></script>\n
+        <script src="/js/bootstrap.min.js"></script>\n
+    </body>\n
+</html>\n
+'
+    'version' => '1.1'
+    'statusCode' => 200
+    'statusText' => 'OK'
+    'charset' => 'UTF-8'
+) is redirected and has header "Location" with value "/login" and status code is 302.
+
+D:\toDoList\vendor\symfony\framework-bundle\Test\BrowserKitAssertionsTrait.php:142
+D:\toDoList\vendor\symfony\framework-bundle\Test\BrowserKitAssertionsTrait.php:56
+D:\toDoList\tests\Controller\TaskControllerTest.php:56
+phpvfscomposer://D:\toDoList\vendor\phpunit\phpunit\phpunit:60
+
+FAILURES!
+Tests: 1, Assertions: 3, Failures: 1.
+
+Remaining indirect deprecation notices (3)
+
+  1x: The "Symfony\Bridge\Doctrine\Logger\DbalLogger" class implements "Doctrine\DBAL\Logging\SQLLogger" that is deprecated Use {@see \Doctrine\DBAL\Logging\Middleware} or implement {@see \Doctrine\DBAL\Driver\Middleware} instead.
+    1x in TaskControllerTest::testListTasksNoLogged from App\Tests
+
+  1x: The "DAMA\DoctrineTestBundle\Doctrine\DBAL\VersionAwarePlatformStaticDriver" class implements "Doctrine\DBAL\VersionAwarePlatformDriver" that is deprecated All drivers will have to be aware of the server version in the next major release.
+    1x in TaskControllerTest::testListTasksNoLogged from App\Tests
+
+  1x: The "Sensio\Bundle\FrameworkExtraBundle\Configuration\Route" annotation is deprecated since version 5.2. Use "Symfony\Component\Routing\Annotation\Route" instead.
+    1x in TaskControllerTest::testListTasksNoLogged from App\Tests
+
