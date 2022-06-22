@@ -21,7 +21,7 @@ class UserController extends AbstractController
     }
     /**
      * @Route("/users", name="user_list")
-     * @IsGranted("ROLE_ADMIN", message="Vous devez être authentifié comme administrateur pour voir cette page.")
+     * @IsGranted("ROLE_ADMIN", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandez.")
      */
     public function listUsersAction()
     {
@@ -47,7 +47,7 @@ class UserController extends AbstractController
 
             // Add ROLE_ADMIN to user roles if admin checkbox is checked 
             if ($this->isGranted("ROLE_ADMIN")) {
-                ($form->get('admin')->getData()) ? $user->setRoles(['ROLE_ADMIN']) : $user->setRoles([]);
+                ($form->get('roles')->getData()) ? $user->setRoles(['ROLE_ADMIN']) : $user->setRoles([]);
                 $redirectRoute = 'user_list';
             }
 
@@ -64,7 +64,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/users/{id}/edit", name="user_edit")
-     * @IsGranted("USER_EDIT", subject="user", message="Vous ne pouvez modifier que votre propre compte utilisateur.")
+     * @IsGranted("ROLE_ADMIN", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandez")
      */
     public function editUserAction(User $user, Request $request, UserPasswordHasherInterface $encoder)
     {
@@ -79,7 +79,7 @@ class UserController extends AbstractController
 
             // Add/Remove ROLE_ADMIN to/from user roles if admin checkbox is/isn't checked
             if ($this->isGranted("ROLE_ADMIN")) {
-                ($form->get('admin')->getData()) ? $user->setRoles(['ROLE_ADMIN']) : $user->setRoles([]);
+                ($form->get('roles')->getData()) ? $user->setRoles(['ROLE_ADMIN']) : $user->setRoles([]);
                 $redirectRoute = 'user_list';
             }
 
@@ -95,12 +95,14 @@ class UserController extends AbstractController
 
     /**
      * @Route("/users/{id}/delete", name="user_delete")
-     * @IsGranted("USER_DELETE", subject="user", message="Vous n'avez pas les droits pour supprimer des utilisateurs.")
+     * @IsGranted("ROLE_ADMIN", subject="user", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandez")
      */
     public function deleteUserAction(User $user)
     {
         $this->manager->remove($user);
-        $this->addFlash('success', 'L\'utilisateur a bien été supprimé.');
+        $this->manager->flush();
+
+        $this->addFlash('success', "L'utilisateur a bien été supprimé.");
 
         return $this->redirectToRoute('user_list');
     }

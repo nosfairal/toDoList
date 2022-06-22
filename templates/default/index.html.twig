@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block header_title %}
+    {% for message in app.flashes('accesDenied') %}
+		<div class="alert alert-danger" role="alert">{{ message }}</div>
+	{% endfor %}
     <h1>Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !</h1>
 {% endblock %}
 
