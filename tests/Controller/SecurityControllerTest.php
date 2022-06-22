@@ -3,6 +3,7 @@
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,21 +29,24 @@ class SecurityControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('form');
     }
+    
     public function testAuthentificationSuccess()
     {
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form([
-            '_username' => 'admin',
-            '_password' => 'admin'
+            '_username' => 'test',
+            '_password' => 'Test123'
         ]);
         $this->client->submit($form);
 
-        // $this->assertTrue($this->client->getResponse()->isRedirection());
+        //$this->assertTrue($this->client->getResponse()->isRedirection());
 
-        // $this->assertResponseRedirects('/');
-        // $this->client->followRedirect();
-
-        $this->assertSelectorExists('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
+        //$this->assertResponseRedirects('/');
+        $this->client->followRedirect();
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        //$this->assertResponseRedirects("/", Response::HTTP_OK);
+        //$this->assertSelectorExists('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
+        //$this->assertSelectorExists('.btn-danger', "Se déconnecter");
 
         // echo $this->client->getResponse()->getContent();
         // var_dump($this->client->getResponse()->getContent());
@@ -91,7 +95,7 @@ class SecurityControllerTest extends WebTestCase
         /*return $client;
     }
 
-
+    
     public function testLoginFailed()
     {
         $client = static::createClient();
@@ -112,4 +116,30 @@ class SecurityControllerTest extends WebTestCase
 
         static::assertSame("Invalid credentials.", $crawler->filter('div.alert.alert-danger')->text());
     }*/
+
+    /**
+     * Test Logout
+     */
+    public function testLogout()
+    {
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('test@test.fr');
+
+        // simulate $testUser being logged in
+        $this->client->loginUser($testUser);
+
+        $this->client->request('GET', '/logout');
+
+        $this->client->followRedirect();
+
+        //$this->assertResponseRedirects("/login", Response::HTTP_FOUND);
+
+        $this->client->followRedirect();
+        $this->assertSelectorExists('label', 'Mot de passe');
+        //$this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        // $this->assertResponseIsSuccessful()
+        // $this->assertResponseRedirects("/", Response::HTTP_OK);
+    }
 }

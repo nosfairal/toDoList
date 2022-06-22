@@ -21,7 +21,7 @@ class UserController extends AbstractController
     }
     /**
      * @Route("/users", name="user_list")
-     * @IsGranted("ROLE_ADMIN", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandez.")
+     * @IsGranted("ROLE_ADMIN", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé.")
      */
     public function listUsersAction()
     {
@@ -64,7 +64,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/users/{id}/edit", name="user_edit")
-     * @IsGranted("ROLE_ADMIN", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandez")
+     * @IsGranted("ROLE_ADMIN", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé")
      */
     public function editUserAction(User $user, Request $request, UserPasswordHasherInterface $encoder)
     {
@@ -95,7 +95,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/users/{id}/delete", name="user_delete")
-     * @IsGranted("ROLE_ADMIN", subject="user", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandez")
+     * @IsGranted("ROLE_ADMIN", subject="user", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé")
      */
     public function deleteUserAction(User $user)
     {

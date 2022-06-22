@@ -63,7 +63,7 @@ class UserControllerTest extends WebTestCase
 
         $this->client->followRedirect();
         // $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
-        $this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandez.");
+        $this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé.");
     }
 
     /**
@@ -97,7 +97,7 @@ class UserControllerTest extends WebTestCase
 
         $this->client->followRedirect();
         // $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
-        $this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandez");
+        $this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé");
     }
 
     /**
@@ -154,7 +154,7 @@ class UserControllerTest extends WebTestCase
 
         $this->client->followRedirect();
         // $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
-        $this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandez");
+        $this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé");
     }
 
     /**
