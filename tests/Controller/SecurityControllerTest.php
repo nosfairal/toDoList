@@ -16,12 +16,18 @@ class SecurityControllerTest extends WebTestCase
         $this->client = static::createClient();
     }
 
+    /**
+     * Test Display login page
+     */
     public function testDisplayLoginPage()
     {
         $this->client->request('GET', '/login');
         $this->assertResponseIsSuccessful();
     }
 
+    /**
+     * Test Display the login form
+     */
     public function testDisplayLoginForm(): void
     {
         $crawler = $this->client->request('GET', '/login');
@@ -30,7 +36,10 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSelectorExists('form');
     }
     
-    public function testAuthentificationSuccess()
+    /**
+     * Test Login succes for user
+     */
+    public function testLoginSuccess()
     {
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form([
@@ -48,74 +57,72 @@ class SecurityControllerTest extends WebTestCase
         //$this->assertSelectorExists('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
         //$this->assertSelectorExists('.btn-danger', "Se déconnecter");
 
-        // echo $this->client->getResponse()->getContent();
-        // var_dump($this->client->getResponse()->getContent());
     }
     /*public function testLoginSuccess()
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/login');
+        $crawler = $this->client->request('GET', '/login');
 
-        static::assertSame(200, $client->getResponse()->getStatusCode());
+        static::assertSame(200, $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton("Se connecter")->form([
             "_username" => "test",
             "_password" => 'Test123'
         ]);
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
 
-        static::assertSame(200, $client->getResponse()->getStatusCode());*/
+        static::assertSame(200, $this->client->getResponse()->getStatusCode());*/
 
         //Pour utiliser $client dans d'autres méthodes
         /*return $client;
-    }
+    }*/
 
+    /**
+     * Test Login success as admin
+     */
     public function testLoginSuccessAsAdmin()
     {
-        $client = static::createClient();
 
-        $crawler = $client->request('GET', '/login');
+        $crawler = $this->client->request('GET', '/login');
 
-        static::assertSame(200, $client->getResponse()->getStatusCode());
+        static::assertSame(200, $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton("Se connecter")->form([
             "_username" => "admin",
             "_password" => 'admin'
         ]);
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
 
-        static::assertSame(200, $client->getResponse()->getStatusCode());*/
-
-        //Pour utiliser $client dans d'autres méthodes
-        /*return $client;
+        static::assertSame(200, $this->client->getResponse()->getStatusCode());
     }
 
-    
-    public function testLoginFailed()
+    /**
+     * Test login fail
+     */
+    public function testLoginFail()
     {
-        $client = static::createClient();
 
-        $crawler = $client->request('GET', '/login');
+        $crawler = $this->client->request('GET', '/login');
 
-        static::assertSame(200, $client->getResponse()->getStatusCode());
+        static::assertSame(200, $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton("Se connecter")->form([
             "_username" => "TestUsername",
             "_password" => 'test'
         ]);
 
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
 
-        static::assertSame(200, $client->getResponse()->getStatusCode());
+        static::assertSame(200, $this->client->getResponse()->getStatusCode());
 
         static::assertSame("Invalid credentials.", $crawler->filter('div.alert.alert-danger')->text());
-    }*/
+    }
 
     /**
      * Test Logout
@@ -141,5 +148,33 @@ class SecurityControllerTest extends WebTestCase
         //$this->assertResponseStatusCodeSame(Response::HTTP_OK);
         // $this->assertResponseIsSuccessful()
         // $this->assertResponseRedirects("/", Response::HTTP_OK);
+    }
+
+    /**
+     * Test Logout with button
+     */
+    public function testLogoutWithButton()
+    {
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('test@test.fr');
+
+        // simulate $testUser being logged in
+        $this->client->loginUser($testUser);
+
+        $crawler = $this->client->request('GET', '/');
+
+        // click on "Se déconnecter" button
+        $link = $crawler->selectLink('Se déconnecter')->link();
+        $crawler = $this->client->click($link);
+
+        $this->client->followRedirect();
+
+        //$this->assertResponseRedirects("/login", Response::HTTP_FOUND);
+
+        $this->client->followRedirect();
+
+        $this->assertResponseIsSuccessful();
     }
 }

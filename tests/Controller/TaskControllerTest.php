@@ -58,7 +58,6 @@ class TaskControllerTest extends WebTestCase
     /**
      * Test display tasks list without logged
      */
-
     public function testListTasksNoLogged(): void
     {
         $this->client->request('GET', '/tasks');
@@ -68,6 +67,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorExists('label', 'Mot de passe');
     }
 
+    /**
+     * Test display tasks list by user logged
+     */
     public function testListTasksWithRoleUSER()
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -79,6 +81,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
     }
 
+    /**
+     * Test Create a task by user unlogged
+     */
     public function testCreateTasksNoLogged(): void
     {
         $this->client->request('GET', '/tasks');
@@ -88,6 +93,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorExists('label', 'Mot de passe :');
     }
 
+    /**
+     * Test Create a task by user logged
+     */
     public function testCreateTaskWithRoleUSER()
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -114,6 +122,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertNotNull($taskRepository->findOneBy(['title' => self::TASK_TITLE]));
     }
 
+    /**
+     * Test Delete a task  by an user unlogged
+     */
     public function testDeleteTasksNoLogged(): void
     {
         $this->client->request('GET', '/tasks/' . self::TASK_ID_AUTHOR1 . '/delete');
@@ -124,7 +135,10 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorExists('label', 'Mot de passe :');
     }
 
-    public function testDeleteTaskWichNoAuthor()
+    /**
+     * Test Delete a task without author by an user logged
+     */
+    public function testDeleteTaskWithNoAuthor()
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
         $taskRepository = static::getContainer()->get(TaskRepository::class);
@@ -137,10 +151,9 @@ class TaskControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/tasks/' . self::TASK_ID_AUTHOR1 . '/delete');
 
-        // ----------------CA MARCHE--------------
         //$this->assertResponseRedirects('/');
         $this->client->followRedirect();
-        // ----------------CA MARCHE--------------
+  
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : cette tache ne vous appartient pas ou vous n'etes pas admin ce site, vous n'avez donc pas le droit de la supprimer");
@@ -148,6 +161,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertNotNull($taskRepository->find(self::TASK_ID_AUTHOR1));
     }
 
+    /**
+     * Test Edit a task undone by user unlogged
+     */
     public function testEditasksNoLogged(): void
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -237,6 +253,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertSame($taskUpdated->getContent(), self::TASK_CONTENT);
     }
 
+    /**
+     * Test Toggle a task without logged
+     */
     public function testToggleTasksNoLogged(): void
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -256,6 +275,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertSelectorExists('label', 'Mot de passe :');
     }
 
+    /**
+     * Test Tpggle a task by an user logged
+     */
     public function testToggleaTaskUserLogged(): void
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -319,6 +341,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertNull($taskRepository->find(self::TASK_ID_IS_DONE));
     }
 
+    /**
+     * Test Delete a tasw without author by user
+     */
     public function testDeleteTaskAuthorNullByUSER()
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
@@ -338,6 +363,9 @@ class TaskControllerTest extends WebTestCase
         $this->assertNotNull($taskRepository->find(self::TASK_ID_AUTHORNULL));
     }
 
+    /**
+     * Test Delete a tasw without author by admin
+     */
     public function testDeleteTaskAuthorNullByADMIN()
     {
         $userRepository = static::getContainer()->get(UserRepository::class);
