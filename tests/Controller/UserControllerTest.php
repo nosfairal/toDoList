@@ -41,7 +41,7 @@ class UserControllerTest extends WebTestCase
     public function testListUsersNotlogged(): void
     {
         $this->client->request('GET', '/users');
-        //$this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('label', 'Mot de passe');
@@ -91,13 +91,23 @@ class UserControllerTest extends WebTestCase
         $testUser = $userRepository->findOneByEmail(self::EMAIL_USER);
         $this->client->loginUser($testUser);
 
-        $this->client->request('GET', '/users/create');
-        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        $crawler = $this->client->request('GET', '/users/create');
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $form = $crawler->selectButton('Ajouter')->form();
+        $form['user[username]'] = 'testcreateUser';
+        $form['user[password][first]'] = 'testcreateUserpassword';
+        $form['user[password][second]'] = 'testcreateUserpassword';
+        $form['user[email]'] = 'testcreateUser@hotmail.com';
+        $crawler = $this->client->submit($form);
         // $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
 
         $this->client->followRedirect();
         // $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
-        $this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé");
+        //$this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé");
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $this->assertSelectorExists('.alert.alert-success', "Superbe ! L'utilisateur a bien été ajouté. ");
+
+        $this->assertNotNull($userRepository->findOneBy(['email' => 'testcreateUser@hotmail.com']));
     }
 
     /**
@@ -121,13 +131,11 @@ class UserControllerTest extends WebTestCase
         $form['user[password][first]'] = 'testcreateUserpassword';
         $form['user[password][second]'] = 'testcreateUserpassword';
         $form['user[email]'] = 'testcreateUser@hotmail.com';
-        // $form['user[roles]'] = 'ROLE_ADMIN'; //taditionnelle
-        $form['user[roles]']->select('ROLE_ADMIN');  //pour les select ou les choices(dans mon cas)
-        // $form['user[roles]']->tick();    //que pour les checkBox moi ces t un choice
+        // $form['user[roles]'] = 'ROLE_ADMIN'; // normal method
+        $form['user[roles]']->select('ROLE_ADMIN');  // method for select or choices
+        // $form['user[roles]']->tick();    // method for checkbox
 
         $crawler = $this->client->submit($form);
-
-        // $this->assertResponseRedirects();
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('.alert.alert-success', "Superbe ! L'utilisateur a bien été ajouté. ");

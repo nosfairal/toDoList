@@ -5,6 +5,10 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
         App\Entity\User:
             algorithm: auto
+    
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
@@ -19,10 +23,11 @@ security:
         main:
             lazy: true
             provider: app_user_provider
-            form_login:
+            custom_authenticator: App\Security\FormLoginAuthenticator
+            # form_login:
                 # "login" is the name of the route created previously
-                login_path: account_login
-                check_path: account_login
+                # login_path: account_login
+                # check_path: account_login
             logout:
                 path: account_logout
 
@@ -37,9 +42,12 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/users, roles: ROLE_ADMIN }
-        - { path: ^/, roles: ROLE_USER }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+        # RAJOUT NICOLAS
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        # - { path: ^/users, roles: ROLE_ADMIN }
+        - { path: ^/, roles: ROLE_USER } 
 
 when@test:
     security:

@@ -2,8 +2,10 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Repository\UserRepository;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,23 +41,32 @@ class SecurityControllerTest extends WebTestCase
     /**
      * Test Login succes for user
      */
-    public function testLoginSuccess()
+    public function testAuthenticationSuccess()
     {
+        //$user = new User;
+        //$token = new UsernamePasswordToken($user, null, 'main', []);
         $crawler = $this->client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')->form([
-            '_username' => 'test',
-            '_password' => 'Test123'
+            'username' => 'user1',
+            'password' => 'user1'
+            //'_csrf_token' => $token
         ]);
+        //$token = new UsernamePasswordToken($user, null, 'main', []);
+        //$this->client->getContainer()->get('security.token_storage')->setToken($token);
         $this->client->submit($form);
+        //$this->client->getContainer()->get('security.token_storage')->setToken($token);
 
         //$this->assertTrue($this->client->getResponse()->isRedirection());
 
         //$this->assertResponseRedirects('/');
-        $this->client->followRedirect();
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        //$this->assertResponseRedirects("/", Response::HTTP_OK);
-        //$this->assertSelectorExists('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
-        //$this->assertSelectorExists('.btn-danger', "Se déconnecter");
+        //$crawler = $this->client->followRedirect();
+        //$this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        
+        //$this->assertResponseRedirects("/", Response::HTTP_FOUND);
+        //$this->client->followRedirect();
+        $this->assertSelectorExists('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
+        //$this->assertSelectorExists('.btn-success', "Se connecter");
+        //static::assertSame("Invalid credentials.", $crawler->filter('div.alert.alert-danger')->text());
 
     }
     /*public function testLoginSuccess()
@@ -67,8 +78,8 @@ class SecurityControllerTest extends WebTestCase
         static::assertSame(200, $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton("Se connecter")->form([
-            "_username" => "test",
-            "_password" => 'Test123'
+            "username" => "test",
+            "password" => 'Test123'
         ]);
 
         $this->client->submit($form);
@@ -87,18 +98,20 @@ class SecurityControllerTest extends WebTestCase
     {
 
         $crawler = $this->client->request('GET', '/login');
-
+        //$this->client->request('POST', '/login', ['username' => 'user1', 'password' => 'user1']);
         static::assertSame(200, $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton("Se connecter")->form([
-            "_username" => "admin",
-            "_password" => 'admin'
+            "username" => "admin",
+            "password" => 'admin'
         ]);
 
         $this->client->submit($form);
-        $crawler = $this->client->followRedirect();
+        //$crawler = $this->client->followRedirect();
 
-        static::assertSame(200, $this->client->getResponse()->getStatusCode());
+        //static::assertSame(200, $this->client->getResponse()->getStatusCode());
+        $this->assertSelectorExists('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
+        //static::assertSame("Invalid credentials.", $crawler->filter('div.alert.alert-danger')->text());
     }
 
     /**
@@ -112,8 +125,8 @@ class SecurityControllerTest extends WebTestCase
         static::assertSame(200, $this->client->getResponse()->getStatusCode());
 
         $form = $crawler->selectButton("Se connecter")->form([
-            "_username" => "TestUsername",
-            "_password" => 'test'
+            "username" => "TestUsername",
+            "password" => 'test'
         ]);
 
         $this->client->submit($form);
@@ -132,7 +145,7 @@ class SecurityControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
 
         // retrieve the test user
-        $testUser = $userRepository->findOneByEmail('test@test.fr');
+        $testUser = $userRepository->findOneByEmail('user1@hotmail.com');
 
         // simulate $testUser being logged in
         $this->client->loginUser($testUser);
@@ -141,7 +154,7 @@ class SecurityControllerTest extends WebTestCase
 
         $this->client->followRedirect();
 
-        //$this->assertResponseRedirects("/login", Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
 
         $this->client->followRedirect();
         $this->assertSelectorExists('label', 'Mot de passe');
@@ -158,7 +171,7 @@ class SecurityControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
 
         // retrieve the test user
-        $testUser = $userRepository->findOneByEmail('test@test.fr');
+        $testUser = $userRepository->findOneByEmail('user1@hotmail.com');
 
         // simulate $testUser being logged in
         $this->client->loginUser($testUser);
@@ -171,7 +184,7 @@ class SecurityControllerTest extends WebTestCase
 
         $this->client->followRedirect();
 
-        //$this->assertResponseRedirects("/login", Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
 
         $this->client->followRedirect();
 

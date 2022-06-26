@@ -12,12 +12,12 @@ class TaskControllerTest extends WebTestCase
     /**
      * constant represent a email with role is USER
      */
-    protected const EMAIL_USER1 = 'test@test.fr';
+    protected const EMAIL_USER1 = 'user1@hotmail.com';
 
     /**
      * constant represent a email with role is USER
      */
-    protected const EMAIL_USER2 = 'test2@test.fr';
+    protected const EMAIL_USER2 = 'user2@hotmail.com';
 
     /**
      * constant represent an email with role is ADMIN
@@ -32,18 +32,18 @@ class TaskControllerTest extends WebTestCase
     /**
      * constant that represents the content of the task
      */
-    protected const TASK_CONTENT = 'ceci est un contenu de tache';
+    protected const TASK_CONTENT = 'contenu de tache 4';
 
 
     /**
      * constant represent a task of user1
      */
-    protected const TASK_ID_AUTHOR1 = 1;
+    protected const TASK_ID_AUTHOR1 = 77;
 
     /**
      * constant represent a task without author
      */
-    protected const TASK_ID_AUTHORNULL = 2;
+    protected const TASK_ID_AUTHORNULL = 75;
 
     /**
      * constant represent a task with isDone status
@@ -61,7 +61,7 @@ class TaskControllerTest extends WebTestCase
     public function testListTasksNoLogged(): void
     {
         $this->client->request('GET', '/tasks');
-        //$this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('label', 'Mot de passe');
@@ -87,7 +87,7 @@ class TaskControllerTest extends WebTestCase
     public function testCreateTasksNoLogged(): void
     {
         $this->client->request('GET', '/tasks');
-        //$this->assertResponseRedirects('http://127.0.0.1:8000/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('label', 'Mot de passe :');
@@ -129,7 +129,7 @@ class TaskControllerTest extends WebTestCase
     {
         $this->client->request('GET', '/tasks/' . self::TASK_ID_AUTHOR1 . '/delete');
 
-        //$this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('label', 'Mot de passe :');
@@ -151,7 +151,7 @@ class TaskControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/tasks/' . self::TASK_ID_AUTHOR1 . '/delete');
 
-        //$this->assertResponseRedirects('/');
+        $this->assertResponseRedirects('/tasks');
         $this->client->followRedirect();
   
 
@@ -177,7 +177,7 @@ class TaskControllerTest extends WebTestCase
 
         $this->client->request('GET', "/tasks/$idTaskEdit/edit");
 
-        //$this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('label', 'Mot de passe :');
@@ -209,7 +209,7 @@ class TaskControllerTest extends WebTestCase
         ]);
         $this->client->submit($form);
 
-        //$this->assertResponseRedirects('/tasks', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/tasks', Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('.alert.alert-success', "Superbe ! La tâche a bien été modifiée.");
@@ -244,7 +244,7 @@ class TaskControllerTest extends WebTestCase
         ]);
         $this->client->submit($form);
 
-        //$this->assertResponseRedirects('/tasks', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/tasks/done', Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('.alert.alert-success', "Superbe ! La tâche a bien été modifiée.");
@@ -269,14 +269,14 @@ class TaskControllerTest extends WebTestCase
 
         $this->client->request('GET', "/tasks/$idTaskToggle/toggle");
 
-        //$this->assertResponseRedirects('/login', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('label', 'Mot de passe :');
     }
 
     /**
-     * Test Tpggle a task by an user logged
+     * Test Toggle a task by an user logged
      */
     public function testToggleaTaskUserLogged(): void
     {
@@ -293,7 +293,7 @@ class TaskControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', "/tasks/$idTaskToggle/toggle");
 
-        //$this->assertResponseRedirects('/tasks', Response::HTTP_FOUND);
+        $this->assertResponseRedirects('/tasks', Response::HTTP_FOUND);
         $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('.alert.alert-success', "Superbe ! La tâche ma tache a bien été marquée comme faite.");
@@ -355,7 +355,7 @@ class TaskControllerTest extends WebTestCase
         //\dd($testUser);
         $crawler = $this->client->request('GET', '/tasks/' . self::TASK_ID_AUTHORNULL . '/delete');
 
-        //$this->assertResponseRedirects('/');
+        $this->assertResponseRedirects('/tasks');
         $this->client->followRedirect();
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);

@@ -43,7 +43,7 @@ class UserController extends AbstractController
 
             $password = $encoder->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
-            $redirectRoute = 'login';
+            $redirectRoute = 'account_login';
 
             // Add ROLE_ADMIN to user roles if admin checkbox is checked 
             if ($this->isGranted("ROLE_ADMIN")) {
@@ -95,10 +95,16 @@ class UserController extends AbstractController
 
     /**
      * @Route("/users/{id}/delete", name="user_delete")
-     * @IsGranted("ROLE_ADMIN", subject="user", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé")
+     * @IsGranted("ROLE_ADMIN", message="N'étant pas administrateur de ce site vous n'avez pas accès à la ressource que vous avez demandé")
      */
-    public function deleteUserAction(User $user)
+    public function deleteUserAction(Request $request)
     {
+        $userId = $request->get('id');
+        $user = $this->repository->find($userId);
+        //\dd($user);
+        if(!$user){
+            return $this->redirectToRoute('user_list');
+        }
         $this->manager->remove($user);
         $this->manager->flush();
 
