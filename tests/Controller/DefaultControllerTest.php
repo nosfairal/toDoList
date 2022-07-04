@@ -7,8 +7,6 @@ use App\Repository\UserRepository;
 
 class DefaultControllerTest extends WebTestCase
 {
-
-
     private $client = null;
 
     public function setUp(): void
@@ -21,7 +19,7 @@ class DefaultControllerTest extends WebTestCase
         $userRepository = static::getContainer()->get(UserRepository::class);
 
         // retrieve the test user
-        $testUser = $userRepository->findOneByEmail('test@test.fr');
+        $testUser = $userRepository->findOneByEmail('user1@hotmail.com');
 
         // simulate $testUser being logged in
         $this->client->loginUser($testUser);

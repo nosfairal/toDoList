@@ -18,7 +18,7 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        for ($nbrUser = 1; $nbrUser < 3; $nbrUser++) {
+        for ($nbrUser = 1; $nbrUser < 4; $nbrUser++) {
             $user = new User();
             $user->setUsername('user' . $nbrUser)
                 ->setEmail('user' . $nbrUser  . '@hotmail.com')
@@ -27,7 +27,7 @@ class UserFixtures extends Fixture
 
             $manager->persist($user);
 
-            // we save the reference of the user
+            // Save the reference to the user
             $this->addReference('user' . $nbrUser, $user);
         }
 

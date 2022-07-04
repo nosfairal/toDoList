@@ -15,12 +15,12 @@ class TaskController extends AbstractController
 {
     public function __construct(TaskRepository $repository, EntityManagerInterface $manager)
     {
-       $this->repository = $repository ;
-       $this->manager = $manager ;
+        $this->repository = $repository ;
+        $this->manager = $manager ;
     }
     /**
      * @Route("/tasks", name="task_list")
-     * 
+     *
      * Display undone tasks list
      */
     public function listAction()
@@ -32,7 +32,7 @@ class TaskController extends AbstractController
 
     /**
      * @Route("/tasks/done", name="task_list_isDone")
-     * 
+     *
      * Display done tasks list
      */
     public function listActionisDone()
@@ -44,7 +44,7 @@ class TaskController extends AbstractController
 
     /**
      * @Route("/tasks/create", name="task_create")
-     * 
+     *
      * Create a task
      */
     public function createAction(Request $request)
@@ -72,7 +72,7 @@ class TaskController extends AbstractController
 
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
-     * 
+     *
      * Update a task
      */
     public function editAction(Task $task, Request $request)
@@ -100,7 +100,7 @@ class TaskController extends AbstractController
 
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
-     * 
+     *
      * Toggle task to done
      */
     public function toggleTaskAction(Task $task)
@@ -116,7 +116,7 @@ class TaskController extends AbstractController
 
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
-     * 
+     *
      * Delete a  task
      */
     public function deleteTaskAction(Task $task)

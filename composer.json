@@ -6,7 +6,6 @@
         "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "cocur/slugify": "^4.1",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.5",
         "doctrine/doctrine-migrations-bundle": "^3.2",
@@ -49,7 +48,9 @@
     "require-dev": {
         "dama/doctrine-test-bundle": "^7.1",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "icanhazstring/composer-unused": "^0.8.2",
         "phpunit/phpunit": "9",
+        "squizlabs/php_codesniffer": "*",
         "symfony/browser-kit": "5.4.*",
         "symfony/css-selector": "5.4.*",
         "symfony/debug-bundle": "5.4.*",
@@ -97,12 +98,12 @@
             "@auto-scripts"
         ],
         "prepare-database": [
-            "php bin/console doctrine:database:drop --if-exists -f",
-            "php bin/console doctrine:database:create",
-            "php bin/console doctrine:migrations:migrate",
-            "php bin/console doctrine:fixtures:load -n"
+            "symfony console doctrine:database:drop --if-exists -f",
+            "symfony console doctrine:database:create",
+            "symfony console doctrine:schema:update -f",
+            "symfony console doctrine:fixtures:load -n"
         ],
-        "tests": [
+        "prepare-tests": [
             "php bin/console doctrine:database:drop --force --env=test || true",
 	        "php bin/console doctrine:database:create --env=test",
 	        "php bin/console doctrine:migrations:migrate -n --env=test",

@@ -37,7 +37,7 @@ class SecurityControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('form');
     }
-    
+
     /**
      * Test Login succes for user
      */
@@ -61,13 +61,12 @@ class SecurityControllerTest extends WebTestCase
         //$this->assertResponseRedirects('/');
         //$crawler = $this->client->followRedirect();
         //$this->assertResponseStatusCodeSame(Response::HTTP_OK);
-        
+
         //$this->assertResponseRedirects("/", Response::HTTP_FOUND);
         //$this->client->followRedirect();
         $this->assertSelectorExists('h1', "Bienvenue sur Todo List, l'application vous permettant de gérer l'ensemble de vos tâches sans effort !");
         //$this->assertSelectorExists('.btn-success', "Se connecter");
         //static::assertSame("Invalid credentials.", $crawler->filter('div.alert.alert-danger')->text());
-
     }
     /*public function testLoginSuccess()
     {

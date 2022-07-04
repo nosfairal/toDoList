@@ -29,7 +29,7 @@ class TaskTest extends KernelTestCase
 
     /**
      * Test Task Valid
-     * 
+     *
      */
     public function testTaskIsValid()
     {
@@ -54,7 +54,7 @@ class TaskTest extends KernelTestCase
 
     /**
      * Test Task Invalid because no Title
-     * 
+     *
      */
     public function testTaskIsInvalidBecauseNoTitle(): void
     {
@@ -79,7 +79,7 @@ class TaskTest extends KernelTestCase
 
     /**
      * Test Task Invalid because no Content
-     * 
+     *
      */
     public function testTaskIsInvalidBecauseNoContent(): void
     {
@@ -122,7 +122,7 @@ class TaskTest extends KernelTestCase
 
     /**
      * Management of errors
-     * 
+     *
      */
     private function getValidationErrors(Task $task, int $numberOfExpectedErrors): ConstraintViolationList
     {

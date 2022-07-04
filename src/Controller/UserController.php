@@ -16,8 +16,8 @@ class UserController extends AbstractController
 {
     public function __construct(UserRepository $repository, EntityManagerInterface $manager)
     {
-       $this->repository = $repository ;
-       $this->manager = $manager ;
+        $this->repository = $repository ;
+        $this->manager = $manager ;
     }
     /**
      * @Route("/users", name="user_list")
@@ -40,12 +40,11 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $password = $encoder->hashPassword($user, $user->getPassword());
             $user->setPassword($password);
             $redirectRoute = 'account_login';
 
-            // Add ROLE_ADMIN to user roles if admin checkbox is checked 
+            // Add ROLE_ADMIN to user roles if admin checkbox is checked
             if ($this->isGranted("ROLE_ADMIN")) {
                 ($form->get('roles')->getData()) ? $user->setRoles(['ROLE_ADMIN']) : $user->setRoles([]);
                 $redirectRoute = 'user_list';
@@ -102,7 +101,7 @@ class UserController extends AbstractController
         $userId = $request->get('id');
         $user = $this->repository->find($userId);
         //\dd($user);
-        if(!$user){
+        if (!$user) {
             return $this->redirectToRoute('user_list');
         }
         $this->manager->remove($user);

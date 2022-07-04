@@ -22,7 +22,7 @@ class TaskControllerTest extends WebTestCase
     /**
      * constant represent an email with role is ADMIN
      */
-    protected const EMAIL_ADMIN = 'admin@admin.com';
+    protected const EMAIL_ADMIN = 'admin@hotmail.com';
 
     /**
      * constant that represents the title of the task
@@ -38,17 +38,17 @@ class TaskControllerTest extends WebTestCase
     /**
      * constant represent a task of user1
      */
-    protected const TASK_ID_AUTHOR1 = 77;
+    protected const TASK_ID_AUTHOR1 = 4;
 
     /**
      * constant represent a task without author
      */
-    protected const TASK_ID_AUTHORNULL = 75;
+    protected const TASK_ID_AUTHORNULL = 1;
 
     /**
      * constant represent a task with isDone status
      */
-    protected const TASK_ID_IS_DONE = 3;
+    protected const TASK_ID_IS_DONE = 5;
 
     public function setUp(): void
     {
@@ -153,7 +153,7 @@ class TaskControllerTest extends WebTestCase
 
         $this->assertResponseRedirects('/tasks');
         $this->client->followRedirect();
-  
+
 
         $this->assertResponseStatusCodeSame(Response::HTTP_OK);
         $this->assertSelectorExists('.alert.alert-danger', "VOUS AVEZ ETE REDIRIGE SUR CETTE PAGE CAR : cette tache ne vous appartient pas ou vous n'etes pas admin ce site, vous n'avez donc pas le droit de la supprimer");
@@ -401,7 +401,5 @@ class TaskControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
         $this->assertSelectorExists('button', "Marquée non terminée");
-
     }
-
 }

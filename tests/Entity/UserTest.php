@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
-
 class UserTest extends KernelTestCase
 {
     private const EMAIL_CONSTRAINT_MESSAGE = "Veuillez entrer une adresse email valide.";
@@ -43,7 +42,7 @@ class UserTest extends KernelTestCase
 
     /**
      * Test User Valid
-     * 
+     *
      */
     public function testUserIsValid(): void
     {
@@ -68,7 +67,7 @@ class UserTest extends KernelTestCase
 
     /**
      * Test User Invalid because no Email
-     * 
+     *
      */
     public function testUserIsInvalidBecauseNoEmail(): void
     {
@@ -93,7 +92,7 @@ class UserTest extends KernelTestCase
 
     /**
      * Test User Invalid because no Password
-     * 
+     *
      */
     public function testUserIsInvalidBecauseNoPassword(): void
     {
@@ -118,7 +117,7 @@ class UserTest extends KernelTestCase
 
     /**
      * Test User Invalid because no Username
-     * 
+     *
      */
     public function testUserIsInvalidBecauseNoUsername(): void
     {
@@ -142,7 +141,7 @@ class UserTest extends KernelTestCase
 
     /**
      * Test User Invalid because Email invalid
-     * 
+     *
      */
     public function testUserIsInvalidBecauseEmailInvalid(): void
     {
@@ -170,14 +169,13 @@ class UserTest extends KernelTestCase
      */
     public function testEraseCredentials()
     {
-        $user =new User;
+        $user = new User();
         $this->assertEquals(null, $user->eraseCredentials());
-       
     }
 
     /**
      * Test User Invalid because Password invalid
-     * 
+     *
      */
     public function testUserIsInvalidBecausePasswordInvalid(): void
     {
@@ -203,7 +201,7 @@ class UserTest extends KernelTestCase
 
     /**
      * Test User Invalid because Password length invalid
-     * 
+     *
      */
     public function testUserIsInvalidBecausePasswordLengthInvalid(): void
     {
@@ -229,7 +227,7 @@ class UserTest extends KernelTestCase
 
     /**
      * Test Relation
-     * 
+     *
      */
     public function testTasks(): void
     {
@@ -257,7 +255,7 @@ class UserTest extends KernelTestCase
 
     /**
      * Management of errors
-     * 
+     *
      */
     private function getValidationErrors(User $user, int $numberOfExpectedErrors): ConstraintViolationList
     {
