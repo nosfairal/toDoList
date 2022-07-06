@@ -89,7 +89,7 @@ Your database should be updated with fake tasks and users.
 
 ### __Configure the .env.test__
 
-Installer Xdebug ([ici](https://xdebug.org/docs/install))
+If needed, install Xdebug ([here](https://xdebug.org/docs/install))
 
 
 You must define DATABASE_URL environment variable for tests. Use the same that previously, doctrine will add db suffix _test typically.
@@ -107,7 +107,7 @@ $ .\vendor\bin\phpunit
 ```
 See more details and options about command-line test runner in [PHP Unit documentation - EN](https://phpunit.readthedocs.io/en/latest/textui.html) / [FR](https://phpunit.readthedocs.io/fr/latest/textui.html).
 
-Entrez la commande suivante pour générer la documentation de couverture de test:
+Enter the following command to generate the coverage test documentation :
 ```
 vendor\bin\phpunit --coverage-html coverage/   
 ```
@@ -115,4 +115,4 @@ vendor\bin\phpunit --coverage-html coverage/
 ---
 ## CONTRIBUTION
 
-See [Contributing file](CONTRIB.md).
+If you want to contribute, see [Contributing file](CONTRIB.md).
