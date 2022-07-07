@@ -24,12 +24,12 @@ Make your code changes, dividing into multiple commits if necessary. Write commi
 ### 4/ Test your changes
 Run the tests to verify that they always pass after your changes:
 ```
-$ ./vendor/bin/phpunit
+$ .\vendor\bin\phpunit
 ```
 If necessary update the existing tests or create new ones to test your contribution.  
 Then update the coverage test file for Codacy, with the following command:
 ```
-$ ./vendor/bin/phpunit --coverage-clover tests/coverage.xml
+$ .\vendor\bin\phpunit --coverage-clover tests/coverage.xml
 ```
 Don't forget to commit this new *tests/coverage.xml* file!
 
@@ -60,12 +60,12 @@ Faites vos modifications de code, en divisant si besoin en plusieurs commits. R�
 ### 4/ Testez vos modifications
 Lancez les tests pour vérifier qu'ils passent toujours après vos modifs :
 ```
-$ ./vendor/bin/phpunit
+$ .\vendor\bin\phpunit
 ```
 Si besoin mettez à jour les tests existants ou créez-en de nouveaux pour tester votre contribution.  
 Mettez ensuite à jour le fichier de test coverage pour Codacy, avec la commande suivante :
 ```
-$ ./vendor/bin/phpunit --coverage-clover tests/coverage.xml
+$ .\vendor\bin\phpunit --coverage-clover tests/coverage.xml
 ```
 N'oubliez pas de "commiter" ce nouveau fichier *tests/coverage.xml*!
 
