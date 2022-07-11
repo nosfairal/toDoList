@@ -35,7 +35,16 @@ See more information on technical requirements in the [Symfony official document
 
 ### __Framework and libraries__
 Framework: __Symfony ^5.4.1(LTS)__  
-Dependencies manager: __Composer ^2.2.3__  
+Dependencies manager: __Composer ^2.2.3__ 
+Libraries : 
+* Bootstrap v3.3.7
+* doctrine/orm: "^2.11"
+* doctrine/doctrine-fixtures-bundle": "^3.4"
+* phpunit/phpunit: "^9"
+* symfony/phpunit-bridge": "^6.1"
+* dama/doctrine-test-bundle: "^7.1"
+* icanhazstring/composer-unused: "^0.8.2"
+* squizlabs/php_codesniffer: "*"
 
 To run tests, you also need __PHPUnit__. See requirements in [PHPUnit documentation - EN](https://phpunit.readthedocs.io/en/latest/installation.html#requirements) / [FR](https://phpunit.readthedocs.io/fr/latest/installation.html#pre-requis)  
 
@@ -115,4 +124,4 @@ vendor\bin\phpunit --coverage-html coverage/
 ---
 ## CONTRIBUTION
 
-If you want to contribute, see [Contributing file](CONTRIB.md).
+If you want to contribute, see [Contributing file](contributing.md).
